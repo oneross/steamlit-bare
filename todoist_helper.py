@@ -164,6 +164,20 @@ def get_tasks_dict():
     dictTasks = [objToDict(t) for t in tasks]
     return dictTasks
 
+## adjust priority... grrr
+def reverse_priority(x):
+    if x == 1:
+        result = 4
+    elif x == 2:
+        result = 3
+    elif x == 3:
+        result = 2
+    elif x == 4:
+        result = 1
+    else:
+        pass
+    return result
+
 def get_tasks_df():
     dictTasks = get_tasks_dict()
     df = pd.json_normalize(dictTasks)
@@ -173,6 +187,7 @@ def get_tasks_df():
         oldName = oldColumnNames[i]
         newName = newColumnNames[i]
         df.rename(columns = {oldName:newName}, inplace = True)
+    
+    df['priority'] = df['priority'].apply(lambda x: reverse_priority(x))
     return df
 
-print(get_tasks_df())

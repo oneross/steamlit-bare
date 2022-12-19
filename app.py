@@ -11,15 +11,35 @@ if 'sidebar_state' not in st.session_state:
 # Streamlit set_page_config method has a 'initial_sidebar_state' argument that controls sidebar state.
 st.set_page_config(initial_sidebar_state=st.session_state.sidebar_state)
 
+## styles
+st.markdown("""
+<style>
+.small-font {
+    font-size:10px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Show title and description of the app.
 st.title('Dashboard')
 st.sidebar.markdown('Select active projects:')
 
-# Toggle sidebar state between 'expanded' and 'collapsed'.
-# if st.button('Click to toggle sidebar state'):
-#     st.session_state.sidebar_state = 'collapsed' if st.session_state.sidebar_state == 'expanded' else 'expanded'
-#     # Force an app rerun after switching the sidebar state.
 #     st.experimental_rerun()
+
+
+
+def format_task(taskName, taskUrl):
+    return '* ' + taskName + '  --> [Link](' + taskUrl + ')'
+def stMarkdownPrint(taskName, taskUrl):
+    st.markdown(format_task(taskName, taskUrl))
+def printTasks(df, style=None):
+    taskBlob = '<BR>'.join([format_task(x,y) for x, y in zip(df['content'], df['url'])])
+    if style:
+        prefix = '<div style="font-size: small">'
+        postfix = '</div>'
+        st.markdown(prefix+taskBlob+postfix, unsafe_allow_html=True)
+    else:
+        st.markdown('\n'.join([format_task(x,y) for x, y in zip(df['content'], df['url'])]))
 
 df = td.get_tasks_df()
 
@@ -44,12 +64,10 @@ with left:
     heatmap + text
 
 with right:
-    st.write('hello world')
+    'Top Priority 1 Tasks'
+    top_tasks = tasks[tasks['priority'] == 1].sort_values(by = ['due_date', 'order'], ascending=True).head(3)
+    # printTasks(top_tasks, style='small-font')
+    printTasks(top_tasks)
 
 with st.expander('Full list of tasks'):
-    def format_task(taskName, taskUrl):
-        return '* ' + taskName + '  --> [Link](' + taskUrl + ')'
-    def stMarkdownPrint(taskName, taskUrl):
-        st.markdown(format_task(taskName, taskUrl))
-    
-    dummy = [stMarkdownPrint(x,y) for x, y in zip(df['content'], df['url'])]
+    printTasks(tasks)
