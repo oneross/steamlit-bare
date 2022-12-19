@@ -1,6 +1,10 @@
 import altair as alt
 
-def get_heatmap_with_counts(df, xCol, yCol):
+def get_heatmap_with_counts(df, xCol, yCol, xTitle='default', yTitle='default'):
+    if xTitle == 'default':
+        xTitle = xCol
+    if yTitle == 'default':
+        yTitle = yCol
     skinny = df[[yCol, xCol]]
     skinny2 = skinny.query(xCol + ' == ' + xCol + ' and ' + yCol + ' == ' + yCol)
     skinny2[xCol] = skinny2[xCol].astype(str)
@@ -11,8 +15,8 @@ def get_heatmap_with_counts(df, xCol, yCol):
         num_tasks='count()',
         groupby=[yCol, xCol]
     ).encode(
-        alt.X(xCol, scale=alt.Scale(paddingInner=0)),
-        alt.Y(yCol, scale=alt.Scale(paddingInner=0)),
+        alt.X(xCol, scale=alt.Scale(paddingInner=0), axis=alt.Axis(title=xTitle)),
+        alt.Y(yCol, scale=alt.Scale(paddingInner=0), axis=alt.Axis(title=yTitle))
     )
 
     heatmap = base.mark_rect().encode(

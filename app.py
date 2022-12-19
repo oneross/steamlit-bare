@@ -40,7 +40,7 @@ left, right = st.columns(2)
 
 with left:
     'Upcoming Task Density by Priority'
-    (heatmap, text) = ah.get_heatmap_with_counts(tasks, 'due_date', 'priority')
+    (heatmap, text) = ah.get_heatmap_with_counts(tasks, 'due_date', 'priority', xTitle=None, yTitle='Pri')
     heatmap + text
 
 with right:
