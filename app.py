@@ -22,11 +22,13 @@ st.markdown("""
 
 # Show title and description of the app.
 st.title('Dashboard')
-st.sidebar.markdown('Select active projects:')
+st.sidebar.markdown('Settings:')
 
 #     st.experimental_rerun()
 
-
+def hasSharedElement(listX, listY):
+    result = set(listX) and set(listY)
+    return result
 
 def format_task(taskName, taskUrl):
     return '* ' + taskName + '  --> [Link](' + taskUrl + ')'
@@ -47,14 +49,28 @@ projOrder = df[['project_name', 'project_order']]
 sortProjOrder = projOrder.sort_values(['project_order'])
 projects = sortProjOrder['project_name'].unique()
 
+compoundTags = [ t for t in df['labels']]
+tags = sorted(list(set([item for sublist in compoundTags for item in sublist])))
+
 with st.sidebar:
     display_projects = {}
-    for p in projects:
-        display_projects[p] = st.checkbox(p, value = True)
+    display_tags = {}
+    with st.expander('Projects'):
+        for p in projects:
+            display_projects[p] = st.checkbox(p, value = True)
+    with st.expander('Tags'):
+        for t in tags:
+            display_tags[t] = st.checkbox(t, value = True)
     
 # st.session_state.sidebar_state = 'collapsed'
 
-tasks = df[df['project_name'].isin([key for key in display_projects if display_projects[key]])]
+pTasks = df[df['project_name'].isin([key for key in display_projects if display_projects[key]])]
+
+# doesn't error, but when tasks = pTasks heatmap throws error
+tTasks = df.apply(lambda x: hasSharedElement(x['labels'], [key for key in display_tags if display_tags[key]]), axis=1)
+
+# tasks = tTasks #apply tag labels
+tasks = pTasks #don't apply tag labels
 
 left, right = st.columns(2)
 
