@@ -177,6 +177,9 @@ def reverse_priority(x):
     else:
         pass
     return result
+def better_reverse_priority(x):
+    result = 5-x
+    return result
 
 def get_tasks_df():
     dictTasks = get_tasks_dict()
