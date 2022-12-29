@@ -128,12 +128,16 @@ def get_task_by_id(task_id, tasks):
     return result
 
 # Fetch tasks synchronously
-def get_tasks_sync():
+def get_tasks_sync(filterString):
     api = TodoistAPI(TODOIST_API_TOKEN)
     try:
         projects = api.get_projects()
         sections = api.get_sections()
-        tasks = api.get_tasks()
+        if filter:
+            tasks = api.get_tasks(filter=filterString)
+        else:
+            tasks = api.get_tasks()
+        
         for task in tasks:
             task.Age = get_age(task.created_at)
             
@@ -159,8 +163,8 @@ def objToDict(inputObj):
             pass
     return d
 
-def get_tasks_dict():
-    tasks = get_tasks_sync()
+def get_tasks_dict(filterString):
+    tasks = get_tasks_sync(filterString)
     dictTasks = [objToDict(t) for t in tasks]
     return dictTasks
 
@@ -181,8 +185,8 @@ def better_reverse_priority(x):
     result = 5-x
     return result
 
-def get_tasks_df():
-    dictTasks = get_tasks_dict()
+def get_tasks_df(filter=None):
+    dictTasks = get_tasks_dict(filter)
     df = pd.json_normalize(dictTasks)
     oldColumnNames = df.columns
     newColumnNames = [c.replace('.','_').lower() for c in oldColumnNames]
