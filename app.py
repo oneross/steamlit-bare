@@ -1,11 +1,5 @@
-# import todoist_helper as td
-# import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
-import altair as alt
-import altair_helpers as ah
-
-
 
 # Initialize a session state variable that tracks the sidebar state (either 'expanded' or 'collapsed').
 if 'sidebar_state' not in st.session_state:
@@ -36,16 +30,6 @@ def printTasks(df, style=None):
         st.markdown(prefix+taskBlob+postfix, unsafe_allow_html=True)
     else:
         st.markdown('\n'.join([format_task(x,y) for x, y in zip(df['content'], df['url'])]))
-
-# with st.sidebar:
-#     display_projects = {}
-#     display_tags = {}
-#     with st.expander('Projects'):
-#         for p in projects:
-#             display_projects[p] = st.checkbox(p, value = True)
-#     with st.expander('Tags'):
-#         for t in tags:
-#             display_tags[t] = st.checkbox(t, value = True)
     
 left, right = st.columns(2)
 
