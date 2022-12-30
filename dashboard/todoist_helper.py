@@ -187,3 +187,11 @@ def get_tasks_df(filter=None):
     df['priority'] = df['priority'].apply(lambda x: reverse_priority(x))
     return df
 
+def get_sorted_top_x(list, x):
+    sorted_list = sorted(list, key = lambda t: (t.priority, t.order, (t.due is None, t.due)), reverse= True)
+    results = sorted_list[:x]
+    return results
+
+def get_task_display(t):
+    result = t.display_hierarchy + t.content
+    return result
