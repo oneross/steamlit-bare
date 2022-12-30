@@ -2,6 +2,8 @@
 *secret*
 .env*
 
+# Unique
+*experiments/*
 
 # MacOS
 .DS_Store

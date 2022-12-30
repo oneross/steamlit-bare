@@ -1,6 +1,5 @@
 from todoist_api_python.api_async import TodoistAPIAsync
 from todoist_api_python.api import TodoistAPI
-from secret import TODOIST_API_TOKEN
 
 # from beautiful_date import *
 from datetime import datetime
@@ -8,6 +7,8 @@ from dateutil import relativedelta as durd
 
 import pandas as pd
 
+import os
+TODOIST_API_TOKEN=os.environ['TODOIST_API_KEY']
 
 ## Utility function
 class dotdict(dict):
@@ -170,18 +171,6 @@ def get_tasks_dict(filterString):
 
 ## adjust priority... grrr
 def reverse_priority(x):
-    if x == 1:
-        result = 4
-    elif x == 2:
-        result = 3
-    elif x == 3:
-        result = 2
-    elif x == 4:
-        result = 1
-    else:
-        pass
-    return result
-def better_reverse_priority(x):
     result = 5-x
     return result
 

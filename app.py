@@ -1,5 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from dashboard import todoist_helper as th
 
 # Initialize a session state variable that tracks the sidebar state (either 'expanded' or 'collapsed').
 if 'sidebar_state' not in st.session_state:
@@ -36,8 +37,8 @@ left, right = st.columns(2)
 with left:
     components.iframe(src='https://todoist.com/app/filter/268907551', height=500)
 
-with right:
-    components.iframe(src='https://todoist.com/app/filter/2327135248', height=500)
+# with right:
+#     components.iframe(src='https://todoist.com/app/filter/2327135248', height=500)
 
 
 '---\nHello world!\n---'
