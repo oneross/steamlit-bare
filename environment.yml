@@ -1,4 +1,0 @@
-name: steamlit-bare
-dependencies:
-- python=3
-- streamlit
